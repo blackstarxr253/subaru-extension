@@ -1,0 +1,14 @@
+{
+    "name": "Subaru Parts Helper",
+    "description": "Show commonly used parts for Subaru vehicles",
+    "version": "0.1",
+    "manifest_version": 3,
+    "content_scripts": [
+        {
+            "js": ["dist/scripts/content.js"],
+            "matches": [
+                "https://www.inspect.app.coxautoinc.com/Parts/*"
+            ]
+        }
+    ]
+}
