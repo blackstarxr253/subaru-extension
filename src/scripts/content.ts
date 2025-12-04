@@ -34,6 +34,15 @@ type VehicleData = {
             "2018": {
                 eaf: "16546AA12A",
                 caf: "72880FG000"
+            },
+            "2019": {
+                eaf: "16546AA16A",
+                caf: "72880FL000",
+                wipers: {
+                    driver: "SOA591B726",
+                    pass: "SOA591B717",
+                    rear: "SOA591R614"
+                }
             }
         }
     }
@@ -80,14 +89,22 @@ function generateQuickList(node: HTMLElement, vehicleString: string) {
     const cafAll = vehicleData[model.toLowerCase() as VehicleModels]?.all?.caf
     const cafByYear = vehicleData[model.toLowerCase() as VehicleModels]?.[year as VehicleYearRange]?.caf
 
+    const wipersAll = vehicleData[model.toLowerCase() as VehicleModels]?.all?.wipers
+    const wipersByYear = vehicleData[model.toLowerCase() as VehicleModels]?.[year as VehicleYearRange]?.wipers
+
     const eafString = eafAll ?? eafByYear ?? "No Data"
     const cafString = cafAll ?? cafByYear ?? "No Data"
+    const driverWiperString = wipersAll?.driver ?? wipersByYear?.driver ?? "No Data"
+    const passWiperString = wipersAll?.pass ?? wipersByYear?.pass ?? "No Data"
+    const rearWiperString = wipersAll?.rear ?? wipersByYear?.rear ?? "No Data"
 
     const eafNode = generateNode("Engine Air Filter:", eafString)
     const cafNode = generateNode("Cabin Air Filter:", cafString)
+    const wiperNode = generateCompositeNode("Wiper Blades:", driverWiperString, passWiperString, rearWiperString)
 
     node.appendChild(eafNode)
     node.appendChild(cafNode)
+    node.appendChild(wiperNode)
 }
 
 function displayVehicleData(node: Element) {
@@ -95,8 +112,9 @@ function displayVehicleData(node: Element) {
     const container = document.createElement("div");
     Object.assign(container.style, {
         position: "fixed",
-        top: "126px",
+        top: "50%",
         left: "20px",
+        transform: "translateY(-50%)",
         zIndex: 9999,
         background: "white",
         border: "solid #3F83AA 2px",
@@ -106,15 +124,15 @@ function displayVehicleData(node: Element) {
     const vehicleHeader = document.createElement("div")
     Object.assign(vehicleHeader.style, {
         background: "#3F83AA",
+        height: "40px",
         color: "white",
         fontWeight: "bold",
-        height: "40px",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
     })
     // Header Text
-    const vehicleHeaderText = document.createElement("p")
+    const vehicleHeaderText = document.createElement("span")
     vehicleHeaderText.style.textAlign = "center"
     vehicleHeaderText.textContent = node.textContent.toUpperCase()
 
@@ -124,7 +142,7 @@ function displayVehicleData(node: Element) {
         padding: "6px",
         display: "flex",
         flexDirection: "column",
-        gap: "16px"
+        gap: "8px"
 
     })
 
@@ -155,4 +173,35 @@ if (vehicleFieldContainer) {
         displayVehicleData(node)
     }
 }
+}
+
+function generateCompositeNode(label: string, driverWiperString: string, passWiperString: string, rearWiperString: string) {
+    const newNode = document.createElement("div")
+    const containerNode = document.createElement("div");
+    const labelSpan = document.createElement("span");
+
+    Object.assign(newNode.style, {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        gap: "8px",
+    })
+    Object.assign(containerNode.style, {
+        display: "flex",
+        flexDirection: "column",
+        gap: "8px",
+        paddingLeft: "16px"
+    })
+    
+    labelSpan.textContent = label
+
+    newNode.appendChild(labelSpan)
+
+    containerNode.appendChild(generateNode("Driver:", driverWiperString))
+    containerNode.appendChild(generateNode("Passenger:", passWiperString))
+    containerNode.appendChild(generateNode("Rear:", rearWiperString))
+
+    newNode.appendChild(containerNode)
+
+    return newNode
 }
