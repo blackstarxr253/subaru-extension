@@ -32,7 +32,12 @@ type VehicleData = {
         crosstrek: {
             "2022": {
                 eaf: "16546AA210",
-                caf: "72880FL00A"
+                caf: "72880FL00A",
+                wipers: {
+                    driver: "SOA591B726",
+                    pass: "SOA591B716",
+                    rear: "SOA591R614"
+                }
             }
         },
         forester: {
