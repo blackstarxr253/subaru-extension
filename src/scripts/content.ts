@@ -29,7 +29,12 @@ type VehicleData = {
             }
         },
         brz: {},
-        crosstrek: {},
+        crosstrek: {
+            "2022": {
+                eaf: "16546AA210",
+                caf: "72880FL00A"
+            }
+        },
         forester: {
             "2018": {
                 eaf: "16546AA12A",
